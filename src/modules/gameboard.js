@@ -36,7 +36,6 @@ class Gameboard {
 
     coordsToDisable.forEach((coord) => {
       const [row, col] = [...coord];
-
       if (this.#board[row][col] !== 'S') this.#board[row][col] = 'D';
     });
   }
