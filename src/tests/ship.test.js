@@ -12,15 +12,15 @@ describe('Ship class', () => {
   });
 
   test('setPosition should return multidimensional array', () => {
-    expect(ship.getPosition()).toEqual([
+    expect(ship.getPositions()).toEqual([
       [1, 2, false],
       [1, 3, false],
     ]);
   });
 
-  test('after hit change position coordinate to true', () => {
+  test('if ship is hit change position coordinate to true', () => {
     expect(ship.hit([1, 3])).toBe(true);
-    expect(ship.getPosition()).toEqual([
+    expect(ship.getPositions()).toEqual([
       [1, 2, false],
       [1, 3, true],
     ]);
