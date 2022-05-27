@@ -1,6 +1,7 @@
 class Gameboard {
   #board = [];
   #ships = [];
+
   setBoard() {
     for (let i = 0; i < 10; i++) {
       let row = Array.from(Array(10), (val) => (val = ' '));

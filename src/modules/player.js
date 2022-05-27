@@ -18,6 +18,10 @@ class Player {
   getGameboard() {
     return this.#gameboard;
   }
+
+  shoot(coords, gameboard) {
+    return gameboard.receiveAttack(coords);
+  }
 }
 
 export default Player;
