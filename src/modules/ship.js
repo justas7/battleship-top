@@ -9,6 +9,7 @@ class Ship {
     return JSON.stringify(arr1) === JSON.stringify(arr2);
   }
 
+  /* one spot of ship */
   #findCoord(coords) {
     const position = this.getPositions();
     return position.find((arr) => this.#compareArrays(arr, [...coords, false]));
@@ -18,6 +19,7 @@ class Ship {
     return this.#position;
   }
 
+  /* marks ship's coordinate that was hit */
   hit(coords) {
     const position = this.getPositions();
     if (position.some((arr) => this.#compareArrays(arr, [...coords, false]))) {
@@ -28,6 +30,7 @@ class Ship {
     return false;
   }
 
+  /* checks if ship's all coordiantes were hit */
   isSunk() {
     return this.getPositions().every((coord) => coord[2] === true);
   }

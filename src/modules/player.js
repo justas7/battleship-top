@@ -1,18 +1,8 @@
 class Player {
   #gameboard;
-  #myTurn;
 
-  constructor(gameboard, myTurn) {
+  constructor(gameboard) {
     this.#gameboard = gameboard;
-    this.#myTurn = myTurn;
-  }
-
-  isMyTurn() {
-    return this.#myTurn;
-  }
-
-  toggleMyTurn() {
-    return (this.#myTurn = !this.#myTurn);
   }
 
   getGameboard() {

@@ -1,0 +1,6 @@
+footer {
+  background-color: var(--blue-color);
+  height: 100px;
+  margin-top: auto;
+  box-shadow: 0px -1px 3px rgb(10, 10, 10);
+}

@@ -1,7 +1,24 @@
+:root {
+  --blue-color: #4169e1;
+  --ivory-color: #fffff3;
+}
+
+@import './normalize.css';
+@import './layout/header.css';
+@import './layout/footer.css';
+@import './layout/main.css';
+
 *,
 *::after,
 *::before {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ivory-color);
 }

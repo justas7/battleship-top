@@ -12,14 +12,6 @@ describe('Ai class', () => {
     expect(new Ai([1, 2], false)).toBeInstanceOf(Player);
   });
 
-  test('create new player', () => {
-    expect(ai.getGameboard() && ai.isMyTurn()).toBeFalsy();
-  });
-  test('toggle turn', () => {
-    expect(ai.toggleMyTurn()).toBeTruthy();
-    expect(ai.toggleMyTurn()).toBeFalsy();
-  });
-
   test('can shoot only to empty spots', () => {
     const board = new Gameboard();
     board.setBoard();

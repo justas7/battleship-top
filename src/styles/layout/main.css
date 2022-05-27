@@ -1,0 +1,55 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+main > section {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  background-color: white;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.col {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  cursor: crosshair;
+}
+
+.taken {
+  background-color: rgb(126, 129, 126);
+}
+
+.disabledCell {
+  background-color: rgb(230, 216, 216);
+}
+
+.hit {
+  background-color: red;
+}
+.miss {
+  background-color: rgba(138, 44, 226, 0.8);
+  position: relative;
+}
+
+.miss::after {
+  position: absolute;
+  content: 'X';
+  right: 0;
+  bottom: 5px;
+  left: 0;
+  text-align: center;
+}

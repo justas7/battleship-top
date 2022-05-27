@@ -2,10 +2,9 @@ import Player from './player';
 
 class Ai extends Player {
   #gameboard;
-  #myTurn;
 
-  constructor(gameboard, myTurn) {
-    super(gameboard, myTurn);
+  constructor(gameboard) {
+    super(gameboard);
   }
 
   shoot(gameboard) {
