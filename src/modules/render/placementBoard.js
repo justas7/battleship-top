@@ -24,7 +24,7 @@ const renderShips = function (gameboard, boardEl) {
         const row = boardEl.querySelector(`[data-row="${i}"]`);
         const col = row.querySelector(`[data-col="${j}"]`);
         gameboard[i][j] === 'S'
-          ? col.classList.add('taken')
+          ? col.classList.add('ship')
           : col.classList.add('disabledCell');
       }
     });

@@ -2,18 +2,18 @@ import Gameboard from '../modules/gameboard';
 import Ship from '../modules/ship';
 
 describe('Gameboard class', () => {
-  let board;
+  let board, ship1, ship2;
   beforeEach(() => {
     board = new Gameboard();
     board.setBoard();
-    const ship1 = new Ship([
+    ship1 = new Ship([
       [0, 0],
       [1, 0],
       [2, 0],
       [3, 0],
     ]);
 
-    const ship2 = new Ship([
+    ship2 = new Ship([
       [9, 1],
       [9, 2],
     ]);
@@ -84,5 +84,20 @@ describe('Gameboard class', () => {
     board.receiveAttack([9, 2]);
 
     expect(board.allSunk()).toBeTruthy();
+  });
+
+  test('if ship is sunk disable cells around it', () => {
+    const gameboard = board.getBoard();
+    board.receiveAttack([9, 1]);
+    board.receiveAttack([9, 2]);
+
+    ship2.isSunk();
+    console.table(gameboard);
+
+    expect([gameboard[9][0], gameboard[8][1], gameboard[8][3]]).toEqual([
+      'x',
+      'x',
+      'x',
+    ]);
   });
 });

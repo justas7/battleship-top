@@ -29,7 +29,7 @@ main > section {
   cursor: crosshair;
 }
 
-.taken {
+.ship {
   background-color: rgb(126, 129, 126);
 }
 
@@ -39,10 +39,12 @@ main > section {
 
 .hit {
   background-color: red;
+  cursor: not-allowed;
 }
 .miss {
   background-color: rgba(138, 44, 226, 0.8);
   position: relative;
+  cursor: not-allowed;
 }
 
 .miss::after {

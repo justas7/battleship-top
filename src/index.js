@@ -13,7 +13,6 @@ const ship1 = new Ship([
   [3, 0],
   [4, 0],
 ]);
-console.log(ship1);
 
 const ship2 = new Ship([
   [0, 2],
@@ -62,21 +61,16 @@ render.renderAttacks(board.getBoard(), boardEl);
 render.renderBoard(boardEl2);
 render.renderShips(board.getBoard(), boardEl2);
 render.renderAttacks(board.getBoard(), boardEl2);
-console.table(board.getBoard());
-
-const deleteEls = function (parentEl) {
-  while (parentEl.firstChild) {
-    parentEl.remove(parentEl.firstChild);
-  }
-};
 
 boardEl.addEventListener('click', (e) => {
+  if (
+    e.target.classList.contains('hit') ||
+    e.target.classList.contains('miss')
+  ) {
+    return;
+  }
   const row = +e.target.parentElement.dataset.row;
   const col = +e.target.dataset.col;
-
-  console.log([row, col]);
-
   board.receiveAttack([row, col]);
-
   render.renderAttacks(board.getBoard(), boardEl);
 });

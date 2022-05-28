@@ -23,8 +23,8 @@ class Gameboard {
   }
 
   /* mark coordinates around placed ship */
-  #disableCoords(ship) {
-    const coordsToDisable = ship
+  #getCoordsAround(ship) {
+    const coordsAround = ship
       .flatMap((coords) => {
         return [
           [coords[0] - 1, coords[1] - 1],
@@ -48,10 +48,7 @@ class Gameboard {
           return [coords[0], coords[1]];
       });
 
-    coordsToDisable.forEach((coords) => {
-      const [row, col] = [...coords];
-      if (this.#board[row][col] !== 'S') this.#board[row][col] = 'D';
-    });
+    return coordsAround;
   }
 
   placeShip(ship) {
@@ -66,15 +63,27 @@ class Gameboard {
         throw err;
       }
     });
-    this.#disableCoords(ship.getPositions());
+    const coordsToDisable = this.#getCoordsAround(ship.getPositions());
+    coordsToDisable.forEach((coords) => {
+      const [row, col] = [...coords];
+      this.#board[row][col] !== 'S' ? (this.#board[row][col] = 'D') : '';
+    });
   }
 
   receiveAttack(coords) {
     const [row, col] = [...coords];
 
     if (this.#board[row][col] === 'S') {
-      this.#findShip(coords)?.hit(coords);
+      const ship = this.#findShip(coords);
+      ship?.hit(coords);
       this.#board[row][col] = 'X';
+      if (ship.isSunk()) {
+        const coordsToDisable = this.#getCoordsAround(ship.getPositions());
+        coordsToDisable.forEach((coords) => {
+          const [row, col] = [...coords];
+          this.#board[row][col] !== 'X' ? (this.#board[row][col] = 'x') : '';
+        });
+      }
       return true;
     }
 
