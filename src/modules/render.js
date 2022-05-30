@@ -12,8 +12,6 @@ class Render {
       }
       boardEl.appendChild(row);
     }
-
-    return boardEl;
   };
 
   static ships = function (gameboard, boardEl) {
@@ -42,6 +40,11 @@ class Render {
         }
       });
     });
+  };
+
+  static playAgain = function () {
+    const modal = document.querySelector('.modal');
+    modal.classList.remove('hidden');
   };
 }
 

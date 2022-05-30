@@ -15,6 +15,7 @@ main > section {
   display: grid;
   grid-template-rows: repeat(10, 1fr);
   background-color: white;
+  position: relative;
 }
 
 .row {
@@ -54,4 +55,26 @@ main > section {
   bottom: 5px;
   left: 0;
   text-align: center;
+}
+
+.modal {
+  background-color: rgba(138, 44, 226, 0.8);
+  position: absolute;
+  content: ' ';
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playerContainer {
+  position: relative;
+}
+
+.hidden {
+  display: none;
 }
