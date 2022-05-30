@@ -8,7 +8,7 @@ const player1 = new Player(new Gameboard());
 const player2 = new Ai(new Gameboard());
 
 const game = new Game(player1, player2);
-game.initStartingBoard(player1);
-game.initStartingBoard(player2);
+game.randomizeStartingShips(player1);
+game.randomizeStartingShips(player2);
 game.play();
 game.playAgain();
