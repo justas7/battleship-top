@@ -1,4 +1,4 @@
-import * as render from './render/placementBoard';
+import Render from './render';
 
 class Game {
   #player1;
@@ -19,9 +19,9 @@ class Game {
     const boardEl1 = document.querySelector('#playerBoard');
     const boardEl2 = document.querySelector('#aiBoard');
 
-    render.renderBoard(boardEl1);
-    render.renderBoard(boardEl2);
-    render.renderShips(p1Board, boardEl1);
+    Render.board(boardEl1);
+    Render.board(boardEl2);
+    Render.ships(p1Board, boardEl1);
 
     boardEl2.addEventListener('click', (e) => {
       const row = +e.target.parentElement.dataset.row;
@@ -32,10 +32,10 @@ class Game {
       }
 
       this.#player1.shoot([row, col], this.#player2.getGameboard());
-      render.renderAttacks(p2Board, boardEl2);
+      Render.attacks(p2Board, boardEl2);
       this.#isGameFinished(this.#player1);
       this.#player2.shoot(this.#player1.getGameboard());
-      render.renderAttacks(p1Board, boardEl1);
+      Render.attacks(p1Board, boardEl1);
       this.#isGameFinished(this.#player2);
     });
   }

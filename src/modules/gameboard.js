@@ -31,7 +31,7 @@ class Gameboard {
     });
   }
 
-  /* mark coordinates around placed ship */
+  /* get coordinates around ship on board*/
   #getCoordsAround(ship) {
     const coordsAround = ship
       .flatMap((coords) => {
@@ -95,34 +95,37 @@ class Gameboard {
         : Math.floor(Math.random() * 10);
 
     let isAllowed = false;
+    let counter = 0;
+    while (isAllowed === false) {
+      if (horiOrVert === 1) {
+        for (let i = 0; i < length; i++) {
+          if (this.#board[row][col + i] !== ' ') {
+            isAllowed = false;
+            col === 9 - length ? (col = 0) : (col += 1);
+            if (counter % 10 === 0) {
+              row === 9 ? (row = 0) : (row += 1);
+            }
+            break;
+          }
+          isAllowed = true;
+        }
+      }
+      if (horiOrVert === 2) {
+        for (let i = 0; i < length; i++) {
+          if (this.#board[row + i][col] !== ' ') {
+            isAllowed = false;
+            row === 9 - length ? (row = 0) : (row += 1);
+            if (counter % 10 === 0) {
+              col === 9 ? (col = 0) : (col += 1);
+            }
+            break;
+          }
+          isAllowed = true;
+        }
+      }
 
-    /* check  for horizontal */
-    // while (isAllowed === false) {
-    //   if (horiOrVert === 1) {
-    //     for (let i = 0; i < length; i++) {
-    //       if (this.#board[row][col + i] !== ' ') {
-    //         isAllowed = false;
-    //         row === 9 - length ? (row = 0) : (row += 1);
-    //         horiOrVert = 2;
-    //         break;
-    //       }
-    //       isAllowed = true;
-    //     }
-    //   }
-
-    //   /* check  for vertical*/
-    //   if (horiOrVert === 2) {
-    //     for (let i = 0; i < length; i++) {
-    //       if (this.#board[row + i][col] !== ' ') {
-    //         isAllowed = false;
-    //         col === 9 - length ? (col = 0) : (col += 1);
-    //         horiOrVert = 1;
-    //         break;
-    //       }
-    //       isAllowed = true;
-    //     }
-    //   }
-    // }
+      counter += 1;
+    }
 
     let coords = [];
     for (let i = 0; i < length; i++) {
@@ -131,7 +134,7 @@ class Gameboard {
         : coords.push([row + i, col]);
     }
 
-    console.log(row, col);
+    this.placeShip(new Ship(coords));
   }
 
   allSunk() {
