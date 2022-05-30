@@ -10,7 +10,7 @@ describe('Player class', () => {
 
   test('player should be able to shoot', () => {
     const board = new Gameboard();
-    board.setBoard();
+
     const ship = new Ship([
       [1, 2],
       [1, 3],

@@ -5,7 +5,6 @@ describe('Gameboard class', () => {
   let board, ship1, ship2;
   beforeEach(() => {
     board = new Gameboard();
-    board.setBoard();
     ship1 = new Ship([
       [0, 0],
       [1, 0],
@@ -92,7 +91,6 @@ describe('Gameboard class', () => {
     board.receiveAttack([9, 2]);
 
     ship2.isSunk();
-    console.table(gameboard);
 
     expect([gameboard[9][0], gameboard[8][1], gameboard[8][3]]).toEqual([
       'x',

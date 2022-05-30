@@ -1,8 +1,6 @@
 import Player from './player';
 
 class Ai extends Player {
-  #gameboard;
-
   constructor(gameboard) {
     super(gameboard);
   }

@@ -1,5 +1,3 @@
-const section = document.querySelector('main>section');
-
 const renderBoard = function (boardEl) {
   for (let i = 0; i < 10; i++) {
     const row = document.createElement('div');

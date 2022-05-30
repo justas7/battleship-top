@@ -14,7 +14,7 @@ describe('Ai class', () => {
 
   test('can shoot only to empty spots', () => {
     const board = new Gameboard();
-    board.setBoard();
+
     const ship = new Ship([
       [3, 2],
       [3, 3],
@@ -33,6 +33,5 @@ describe('Ai class', () => {
       ai.shoot(board);
       ai.shoot(board);
     }).not.toThrowError();
-    console.table(board.getBoard());
   });
 });
