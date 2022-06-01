@@ -61,7 +61,7 @@ class Game {
     Render.board(this.#boardEl1);
     Render.board(this.#boardEl2);
     Render.ships(p1Board, this.#boardEl1);
-    Render.ships(p2Board, this.#boardEl2);
+    // Render.ships(p2Board, this.#boardEl2);
 
     this.#boardEl2.addEventListener('click', this.#gameControl);
   }
@@ -73,9 +73,9 @@ class Game {
   }
 
   randomizeStartingShips(player) {
-    player.getGameboard().placeRandomShip(5);
-    player.getGameboard().placeRandomShip(4);
-    player.getGameboard().placeRandomShip(3);
+    // player.getGameboard().placeRandomShip(5);
+    // player.getGameboard().placeRandomShip(4);
+    // player.getGameboard().placeRandomShip(3);
     player.getGameboard().placeRandomShip(3);
     player.getGameboard().placeRandomShip(2);
   }
