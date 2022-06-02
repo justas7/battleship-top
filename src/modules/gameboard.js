@@ -33,7 +33,7 @@ class Gameboard {
 
   /* get coordinates around ship on board*/
   #getCoordsAround(ship) {
-    const coordsAround = ship
+    return ship
       .flatMap((coords) => {
         return [
           [coords[0] - 1, coords[1] - 1],
@@ -56,8 +56,6 @@ class Gameboard {
         )
           return [coords[0], coords[1]];
       });
-
-    return coordsAround;
   }
 
   getShips() {
@@ -79,46 +77,51 @@ class Gameboard {
       }
     });
 
-    const coordsToDisable = this.#getCoordsAround(ship.getPositions());
-    coordsToDisable.forEach((coords) => {
-      const [row, col] = [...coords];
-      this.#board[row][col] !== 'S' ? (this.#board[row][col] = 'D') : '';
+    this.#setShips();
+  }
+
+  #setShips() {
+    this.#ships.forEach((ship) => {
+      const coordsToDisable = this.#getCoordsAround(ship.getPositions());
+      coordsToDisable.forEach((coords) => {
+        const [row, col] = [...coords];
+        this.#board[row][col] !== 'S' ? (this.#board[row][col] = 'D') : '';
+      });
     });
   }
 
+  /* removes ship from board */
   removeShip(ship) {
     ship.getPositions().forEach((coords) => {
       const [row, col] = [...coords];
 
       if (this.#board[row][col] !== ' ') this.#board[row][col] = ' ';
     });
-
     const coordsAround = this.#getCoordsAround(ship.getPositions());
+
     coordsAround.forEach((coords) => {
       const [row, col] = [...coords];
 
-      this.#board[row][col] = ' ';
+      if (this.#board[row][col] === 'D') this.#board[row][col] = ' ';
     });
   }
 
   placeRandomShip(length) {
-    let horiOrVert = Math.ceil(
-      Math.random() * 2
-    ); /* 1 for horizontal, 2 for vertical */
+    let axis = Math.ceil(Math.random() * 2) === 1 ? 'horizontal' : 'vertical';
     let row =
-      horiOrVert === 1
+      axis === 'horizontal'
         ? Math.floor(Math.random() * 10)
         : Math.floor(Math.random() * (10 - length));
 
     let col =
-      horiOrVert === 1
+      axis === 'horizontal'
         ? Math.floor(Math.random() * (10 - length))
         : Math.floor(Math.random() * 10);
 
     let isAllowed = false;
     let counter = 0;
     while (isAllowed === false) {
-      if (horiOrVert === 1) {
+      if (axis === 'horizontal') {
         for (let i = 0; i < length; i++) {
           if (this.#board[row][col + i] !== ' ') {
             isAllowed = false;
@@ -131,7 +134,7 @@ class Gameboard {
           isAllowed = true;
         }
       }
-      if (horiOrVert === 2) {
+      if (axis === 'vertical') {
         for (let i = 0; i < length; i++) {
           if (this.#board[row + i][col] !== ' ') {
             isAllowed = false;
@@ -150,12 +153,12 @@ class Gameboard {
 
     let coords = [];
     for (let i = 0; i < length; i++) {
-      horiOrVert === 1
+      axis === 'horizontal'
         ? coords.push([row, col + i])
         : coords.push([row + i, col]);
     }
 
-    this.placeShip(new Ship(coords));
+    this.placeShip(new Ship(coords, axis));
   }
 
   allSunk() {

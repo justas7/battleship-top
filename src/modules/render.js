@@ -23,7 +23,7 @@ class Render {
 
   /* first parameter is board of gameboard object */
   static ships = function (gameboard, boardEl) {
-    this.removeShips(boardEl);
+    // this.removeShips(boardEl);
 
     gameboard.forEach((row, i) => {
       row.forEach((col, j) => {
@@ -49,6 +49,8 @@ class Render {
         if (gameboard[i][j] === 'X' || gameboard[i][j] === 'x') {
           const row = boardEl.querySelector(`[data-row="${i}"]`);
           const col = row.querySelector(`[data-col="${j}"]`);
+          console.log(col);
+
           gameboard[i][j] === 'X'
             ? col.classList.add('hit')
             : col.classList.add('miss');

@@ -1,8 +1,19 @@
 class Ship {
   #position;
+  #axis;
 
-  constructor(coords) {
+  constructor(coords, axis) {
     this.setPositions(coords);
+    this.#axis = axis;
+  }
+
+  getAxis() {
+    return this.#axis;
+  }
+
+  setAxis(newAxis) {
+    this.#axis = newAxis;
+    return this;
   }
 
   #compareArrays(arr1, arr2) {
@@ -20,7 +31,8 @@ class Ship {
   }
 
   setPositions(coords) {
-    return (this.#position = coords.map((coord) => [...coord, false]));
+    this.#position = coords.map((coord) => [...coord, false]);
+    return this;
   }
 
   /* marks ship's coordinate that was hit */

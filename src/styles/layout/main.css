@@ -36,6 +36,10 @@ main > section {
   height: 100%;
 }
 
+.hit > .ship {
+  background-color: red;
+}
+
 .disabledCell {
   background-color: rgb(230, 216, 216);
 }
