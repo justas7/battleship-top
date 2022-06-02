@@ -31,8 +31,12 @@ class Gameboard {
     });
   }
 
+  getShips() {
+    return this.#ships;
+  }
+
   /* get coordinates around ship on board*/
-  #getCoordsAround(ship) {
+  getCoordsAround(ship) {
     return ship
       .flatMap((coords) => {
         return [
@@ -58,10 +62,6 @@ class Gameboard {
       });
   }
 
-  getShips() {
-    return this.#ships;
-  }
-
   placeShip(ship) {
     ship.getPositions().forEach((coords) => {
       const [row, col] = [...coords];
@@ -76,13 +76,13 @@ class Gameboard {
         throw err;
       }
     });
-
-    this.#setShips();
+    this.#disableCoords();
   }
 
-  #setShips() {
+  /* set ships on board */
+  #disableCoords() {
     this.#ships.forEach((ship) => {
-      const coordsToDisable = this.#getCoordsAround(ship.getPositions());
+      const coordsToDisable = this.getCoordsAround(ship.getPositions());
       coordsToDisable.forEach((coords) => {
         const [row, col] = [...coords];
         this.#board[row][col] !== 'S' ? (this.#board[row][col] = 'D') : '';
@@ -97,13 +97,15 @@ class Gameboard {
 
       if (this.#board[row][col] !== ' ') this.#board[row][col] = ' ';
     });
-    const coordsAround = this.#getCoordsAround(ship.getPositions());
 
+    this.#ships.splice(this.#ships.indexOf(ship), 1);
+
+    const coordsAround = this.getCoordsAround(ship.getPositions());
     coordsAround.forEach((coords) => {
       const [row, col] = [...coords];
-
       if (this.#board[row][col] === 'D') this.#board[row][col] = ' ';
     });
+    this.#disableCoords();
   }
 
   placeRandomShip(length) {
@@ -173,7 +175,7 @@ class Gameboard {
       ship?.hit(coords);
       this.#board[row][col] = 'X';
       if (ship.isSunk()) {
-        const coordsToDisable = this.#getCoordsAround(ship.getPositions());
+        const coordsToDisable = this.getCoordsAround(ship.getPositions());
         coordsToDisable.forEach((coords) => {
           const [row, col] = [...coords];
           this.#board[row][col] !== 'X' ? (this.#board[row][col] = 'x') : '';
