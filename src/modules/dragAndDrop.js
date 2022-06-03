@@ -4,13 +4,17 @@ import Ship from './ship';
 const dragAndDrop = function (gameboard) {
   document.addEventListener('DOMContentLoaded', () => {
     const boardEl = document.getElementById('playerBoard');
-
     const dragStartHandler = (e) => {
       const row = +e.target.dataset.row;
       const col = +e.target.dataset.col;
       if (gameboard.getBoard()[row][col] !== 'S') return;
 
+      const draggableCol = document.createElement('div');
+
+      draggableCol.classList.add('col');
+      draggableCol.classList.add('draggableCol');
       const ship = gameboard.findShip([row, col]);
+      document.querySelector('body').appendChild(draggableCol);
 
       if (!ship) return;
 
@@ -23,8 +27,15 @@ const dragAndDrop = function (gameboard) {
         positions: data,
         axis: ship.getAxis(),
         length: data.length,
+        row: row,
+        col: col,
       });
 
+      ship.getAxis() === 'horizontal'
+        ? (draggableCol.style.width = `${30 * data.length}px`)
+        : (draggableCol.style.height = `${30 * data.length}px`);
+
+      e.dataTransfer.setDragImage(draggableCol, 0, 0);
       e.dataTransfer.setData('application/json', oldData);
     };
 
@@ -78,15 +89,6 @@ const dragAndDrop = function (gameboard) {
           newPositions.push([row + i, col]);
         }
       }
-
-      // const isAvailable = newPositions.some(
-      //   (pos) => board[pos[0]][pos[1]] === ' '
-      // );
-
-      // let ship;
-      // isAvailable
-      //   ? (ship = new Ship(newPositions, oldData.axis))
-      //   : (ship = new Ship(oldPositions, oldData.axis));
 
       const ship = new Ship(newPositions, oldData.axis);
       gameboard.placeShip(ship);
