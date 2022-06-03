@@ -8,13 +8,7 @@ const dragAndDrop = function (gameboard) {
     const dragStartHandler = (e) => {
       const row = +e.target.dataset.row;
       const col = +e.target.dataset.col;
-
-      if (
-        !e.target.classList.contains('ship') &&
-        gameboard.getBoard()[row][col] !== 'S'
-      ) {
-        return;
-      }
+      if (gameboard.getBoard()[row][col] !== 'S') return;
 
       const ship = gameboard.findShip([row, col]);
 
@@ -31,9 +25,6 @@ const dragAndDrop = function (gameboard) {
         length: data.length,
       });
 
-      if (gameboard.getShips().includes(ship)) {
-        gameboard.removeShip(ship);
-      }
       e.dataTransfer.setData('application/json', oldData);
     };
 
@@ -45,16 +36,31 @@ const dragAndDrop = function (gameboard) {
       e.preventDefault();
       const oldData = JSON.parse(e.dataTransfer.getData('application/json'));
 
-      const oldPositions = oldData.positions;
+      /* if something went wrong keep old ship else remove it */
+      if (!oldData || e.currentTarget.id !== 'playerBoard') {
+        return;
+      }
+      const oldShip = gameboard.findShip([...oldData.positions[0]]);
+      if (gameboard.getShips().includes(oldShip)) {
+        gameboard.removeShip(oldShip);
+      }
 
-      const row = +e.target.parentElement.dataset.row;
-      const col = +e.target.dataset.col;
+      const board = gameboard.getBoard();
+      let row, col;
+
+      const dataset = e.target.dataset;
+      e.target.classList.contains('ship')
+        ? (row = +dataset.row)
+        : (row = +e.target.parentElement.dataset.row);
+      e.target.classList.contains('ship')
+        ? (col = +dataset.col)
+        : (col = +e.target.dataset.col);
+
       let newPositions = [];
-      console.log(oldData.positions);
 
       if (oldData.axis === 'horizontal') {
         for (let i = 0; i < oldData.length; i++) {
-          if (col + i > 9) {
+          if (col + i > 9 || board[row][col + i] !== ' ') {
             /*if any coordinate is out of bounds keep old coordinates */
             newPositions = oldData.positions;
             break;
@@ -65,7 +71,7 @@ const dragAndDrop = function (gameboard) {
 
       if (oldData.axis === 'vertical') {
         for (let i = 0; i < oldData.length; i++) {
-          if (row + i > 9) {
+          if (row + i > 9 || board[row + i][col] !== ' ') {
             newPositions = oldData.positions;
             break;
           }
@@ -73,33 +79,25 @@ const dragAndDrop = function (gameboard) {
         }
       }
 
-      const isSameShip = newPositions.some((pos) =>
-        oldPositions.some(
-          (oldPos) => JSON.stringify(pos) === JSON.stringify(oldPos)
-        )
-      );
+      // const isAvailable = newPositions.some(
+      //   (pos) => board[pos[0]][pos[1]] === ' '
+      // );
 
-      if (
-        (!e.target.dataset.col ||
-          e.target.classList.contains('ship') ||
-          e.target.classList.contains('disabledCell')) &&
-        isSameShip === false
-      ) {
-        const ship = new Ship(oldPositions, oldData.axis);
-        gameboard.placeShip(ship);
-        return;
-      }
+      // let ship;
+      // isAvailable
+      //   ? (ship = new Ship(newPositions, oldData.axis))
+      //   : (ship = new Ship(oldPositions, oldData.axis));
 
       const ship = new Ship(newPositions, oldData.axis);
       gameboard.placeShip(ship);
+      console.table(board);
       Render.removeShips(boardEl);
-      Render.ships(gameboard.getBoard(), boardEl);
-      console.table(gameboard.getBoard());
+      Render.ships(board, boardEl);
     };
-    boardEl.addEventListener('click', (e) => console.log(e.target));
-    document.addEventListener('dragstart', dragStartHandler);
-    document.addEventListener('dragover', dragHandler);
-    document.addEventListener('drop', dropHandler);
+
+    boardEl.addEventListener('dragstart', dragStartHandler);
+    boardEl.addEventListener('dragover', dragHandler);
+    boardEl.addEventListener('drop', dropHandler);
   });
 };
 

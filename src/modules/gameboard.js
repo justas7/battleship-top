@@ -63,20 +63,24 @@ class Gameboard {
   }
 
   placeShip(ship) {
+    const notAllowed = ship
+      .getPositions()
+      .some(
+        (pos) =>
+          this.#board[pos[0]][pos[1]] !== 'S' ||
+          this.#board[pos[0]][pos[1]] !== 'D'
+      );
+    if (!notAllowed) return notAllowed;
+
     ship.getPositions().forEach((coords) => {
       const [row, col] = [...coords];
-      try {
-        if (this.#board[row][col] !== ' ')
-          throw new Error('Cannot place ship on this position');
-        this.#board[row][col] = 'S';
-        if (!this.#ships.includes(ship)) {
-          this.#ships.push(ship);
-        }
-      } catch (err) {
-        throw err;
+      this.#board[row][col] = 'S';
+      if (!this.#ships.includes(ship)) {
+        this.#ships.push(ship);
       }
     });
     this.#disableCoords();
+    return notAllowed;
   }
 
   /* set ships on board */

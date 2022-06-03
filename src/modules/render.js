@@ -33,6 +33,7 @@ class Render {
           ship.setAttribute('data-row', row.dataset.row);
           ship.setAttribute('data-col', col.dataset.col);
           ship.classList.add('ship');
+          ship.classList.add('ship');
           gameboard[i][j] === 'S'
             ? col.appendChild(ship)
             : col.classList.add('disabledCell');

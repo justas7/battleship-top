@@ -29,6 +29,7 @@ describe('Gameboard class', () => {
   });
 
   test('place ship on board', () => {
+    console.table(board.getBoard());
     expect(board.getBoard()).toEqual([
       ['S', 'D', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       ['S', 'D', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
