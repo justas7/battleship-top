@@ -154,6 +154,13 @@ class DragAndDrop {
       this.#boardEl.addEventListener('dblclick', this.#rotateHandler);
     });
   }
+
+  removeHandler() {
+    this.#boardEl.removeEventListener('dragstart', this.#dragStartHandler);
+    this.#boardEl.removeEventListener('dragover', this.#dragHandler);
+    this.#boardEl.removeEventListener('drop', this.#dropHandler);
+    this.#boardEl.removeEventListener('dblclick', this.#rotateHandler);
+  }
 }
 
 export default DragAndDrop;

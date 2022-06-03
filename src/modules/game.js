@@ -1,7 +1,4 @@
 import Render from './render';
-import Ai from './ai';
-import Player from './player';
-import Gameboard from './gameboard';
 
 class Game {
   #player1;
@@ -53,49 +50,29 @@ class Game {
     );
   }
 
-  play() {
-    const p1Board = this.#player1.getGameboard().getBoard();
-    const p2Board = this.#player2.getGameboard().getBoard();
+  play = () => {
     const modal = document.querySelector('.modal');
     modal.classList.add('hidden');
-    Render.board(this.#boardEl1);
-    Render.board(this.#boardEl2);
-    Render.ships(p1Board, this.#boardEl1);
-    // Render.ships(p2Board, this.#boardEl2);
-
     this.#boardEl2.addEventListener('click', this.#gameControl);
-  }
-
-  #clearEl(el) {
-    while (el.firstChild) {
-      el.removeChild(el.firstChild);
-    }
-  }
+  };
 
   randomizeStartingShips(player) {
-    player.getGameboard().placeRandomShip(5);
+    // player.getGameboard().placeRandomShip(5);
     // player.getGameboard().placeRandomShip(4);
     // player.getGameboard().placeRandomShip(3);
     // player.getGameboard().placeRandomShip(3);
     player.getGameboard().placeRandomShip(2);
   }
 
-  playAgain() {
-    const playAgainBtn = document.querySelector('.playAgain');
-    playAgainBtn.addEventListener('click', () => {
-      this.#clearEl(this.#boardEl1);
-      this.#clearEl(this.#boardEl2);
-
-      const player1 = new Player(new Gameboard());
-      const player2 = new Ai(new Gameboard());
-
-      this.randomizeStartingShips(player1);
-      this.randomizeStartingShips(player2);
-
-      const game = new Game(player1, player2);
-      game.play();
-    });
-  }
+  playAgain = () => {
+    this.randomizeStartingShips(this.#player1);
+    this.randomizeStartingShips(this.#player2);
+    Render.board(this.#boardEl1);
+    Render.board(this.#boardEl2);
+    Render.ships(this.#player1.getGameboard().getBoard(), this.#boardEl1);
+    const game = new Game(this.#player1, this.#player2);
+    game.play();
+  };
 }
 
 export default Game;

@@ -79,6 +79,7 @@ main > section {
 
 .playerContainer {
   position: relative;
+  transform: scale(1);
 }
 
 .playerContainer > .board {
