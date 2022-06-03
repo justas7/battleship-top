@@ -14,7 +14,7 @@ class Ai extends Player {
       return arr.some((cell) => cell === 'S' || cell === 'D' || cell === ' ');
     };
 
-    while (areAnyEmpty(randomRow) === false) {
+    while (!areAnyEmpty(randomRow)) {
       ++randNum < 10
         ? (randomRow = board[randNum])
         : (randomRow = board[(randNum = 0)]);

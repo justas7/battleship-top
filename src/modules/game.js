@@ -74,9 +74,9 @@ class Game {
 
   randomizeStartingShips(player) {
     player.getGameboard().placeRandomShip(5);
-    player.getGameboard().placeRandomShip(4);
-    player.getGameboard().placeRandomShip(3);
-    player.getGameboard().placeRandomShip(3);
+    // player.getGameboard().placeRandomShip(4);
+    // player.getGameboard().placeRandomShip(3);
+    // player.getGameboard().placeRandomShip(3);
     player.getGameboard().placeRandomShip(2);
   }
 
