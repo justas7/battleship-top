@@ -14,14 +14,28 @@ class Render {
     }
   };
 
+  static removeShips = function (boardEl) {
+    const ships = boardEl.querySelectorAll('.ship');
+    const disabledCells = boardEl.querySelectorAll('.disabledCell');
+    [...ships].forEach((ship) => ship.remove());
+    [...disabledCells].forEach((cell) => cell.classList.remove('disabledCell'));
+  };
+
+  /* first parameter is board of gameboard object */
   static ships = function (gameboard, boardEl) {
     gameboard.forEach((row, i) => {
       row.forEach((col, j) => {
         if (gameboard[i][j] === 'S' || gameboard[i][j] === 'D') {
           const row = boardEl.querySelector(`[data-row="${i}"]`);
           const col = row.querySelector(`[data-col="${j}"]`);
+          const ship = document.createElement('div');
+          ship.setAttribute('draggable', 'true');
+          ship.setAttribute('data-row', row.dataset.row);
+          ship.setAttribute('data-col', col.dataset.col);
+          ship.classList.add('ship');
+          ship.classList.add('ship');
           gameboard[i][j] === 'S'
-            ? col.classList.add('ship')
+            ? col.appendChild(ship)
             : col.classList.add('disabledCell');
         }
       });
@@ -34,6 +48,7 @@ class Render {
         if (gameboard[i][j] === 'X' || gameboard[i][j] === 'x') {
           const row = boardEl.querySelector(`[data-row="${i}"]`);
           const col = row.querySelector(`[data-col="${j}"]`);
+
           gameboard[i][j] === 'X'
             ? col.classList.add('hit')
             : col.classList.add('miss');

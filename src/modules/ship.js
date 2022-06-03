@@ -1,15 +1,26 @@
 class Ship {
   #position;
+  #axis;
 
-  constructor(coords) {
-    this.#position = coords.map((coord) => [...coord, false]);
+  constructor(coords, axis) {
+    this.setPositions(coords);
+    this.#axis = axis;
+  }
+
+  getAxis() {
+    return this.#axis;
+  }
+
+  setAxis(newAxis) {
+    this.#axis = newAxis;
+    return this;
   }
 
   #compareArrays(arr1, arr2) {
     return JSON.stringify(arr1) === JSON.stringify(arr2);
   }
 
-  /* one spot of ship */
+  /* checks if coords belongs to ship*/
   #findCoord(coords) {
     const position = this.getPositions();
     return position.find((arr) => this.#compareArrays(arr, [...coords, false]));
@@ -17,6 +28,11 @@ class Ship {
 
   getPositions() {
     return this.#position;
+  }
+
+  setPositions(coords) {
+    this.#position = coords.map((coord) => [...coord, false]);
+    return this;
   }
 
   /* marks ship's coordinate that was hit */

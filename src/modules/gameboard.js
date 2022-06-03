@@ -20,7 +20,7 @@ class Gameboard {
     return this.#board;
   }
 
-  #findShip(coords) {
+  findShip(coords) {
     return this.#ships.find((ship) => {
       return ship.getPositions().find((position) => {
         return (
@@ -31,9 +31,13 @@ class Gameboard {
     });
   }
 
+  getShips() {
+    return this.#ships;
+  }
+
   /* get coordinates around ship on board*/
-  #getCoordsAround(ship) {
-    const coordsAround = ship
+  getCoordsAround(ship) {
+    return ship
       .flatMap((coords) => {
         return [
           [coords[0] - 1, coords[1] - 1],
@@ -56,48 +60,74 @@ class Gameboard {
         )
           return [coords[0], coords[1]];
       });
-
-    return coordsAround;
   }
 
   placeShip(ship) {
+    const notAllowed = ship
+      .getPositions()
+      .some(
+        (pos) =>
+          this.#board[pos[0]][pos[1]] !== 'S' ||
+          this.#board[pos[0]][pos[1]] !== 'D'
+      );
+    if (!notAllowed) return notAllowed;
+
     ship.getPositions().forEach((coords) => {
       const [row, col] = [...coords];
-      try {
-        if (this.#board[row][col] !== ' ')
-          throw new Error('Cannot place ship on this position');
-        this.#board[row][col] = 'S';
+      this.#board[row][col] = 'S';
+      if (!this.#ships.includes(ship)) {
         this.#ships.push(ship);
-      } catch (err) {
-        throw err;
       }
     });
+    this.#disableCoords();
+    return notAllowed;
+  }
 
-    const coordsToDisable = this.#getCoordsAround(ship.getPositions());
-    coordsToDisable.forEach((coords) => {
-      const [row, col] = [...coords];
-      this.#board[row][col] !== 'S' ? (this.#board[row][col] = 'D') : '';
+  /* set ships on board */
+  #disableCoords() {
+    this.#ships.forEach((ship) => {
+      const coordsToDisable = this.getCoordsAround(ship.getPositions());
+      coordsToDisable.forEach((coords) => {
+        const [row, col] = [...coords];
+        this.#board[row][col] !== 'S' ? (this.#board[row][col] = 'D') : '';
+      });
     });
   }
 
+  /* removes ship from board */
+  removeShip(ship) {
+    ship.getPositions().forEach((coords) => {
+      const [row, col] = [...coords];
+
+      if (this.#board[row][col] !== ' ') this.#board[row][col] = ' ';
+    });
+
+    this.#ships.splice(this.#ships.indexOf(ship), 1);
+
+    const coordsAround = this.getCoordsAround(ship.getPositions());
+    coordsAround.forEach((coords) => {
+      const [row, col] = [...coords];
+      if (this.#board[row][col] === 'D') this.#board[row][col] = ' ';
+    });
+    this.#disableCoords();
+  }
+
   placeRandomShip(length) {
-    let horiOrVert = Math.ceil(
-      Math.random() * 2
-    ); /* 1 for horizontal, 2 for vertical */
+    let axis = Math.ceil(Math.random() * 2) === 1 ? 'horizontal' : 'vertical';
     let row =
-      horiOrVert === 1
+      axis === 'horizontal'
         ? Math.floor(Math.random() * 10)
         : Math.floor(Math.random() * (10 - length));
 
     let col =
-      horiOrVert === 1
+      axis === 'horizontal'
         ? Math.floor(Math.random() * (10 - length))
         : Math.floor(Math.random() * 10);
 
     let isAllowed = false;
     let counter = 0;
     while (isAllowed === false) {
-      if (horiOrVert === 1) {
+      if (axis === 'horizontal') {
         for (let i = 0; i < length; i++) {
           if (this.#board[row][col + i] !== ' ') {
             isAllowed = false;
@@ -110,7 +140,7 @@ class Gameboard {
           isAllowed = true;
         }
       }
-      if (horiOrVert === 2) {
+      if (axis === 'vertical') {
         for (let i = 0; i < length; i++) {
           if (this.#board[row + i][col] !== ' ') {
             isAllowed = false;
@@ -129,12 +159,12 @@ class Gameboard {
 
     let coords = [];
     for (let i = 0; i < length; i++) {
-      horiOrVert === 1
+      axis === 'horizontal'
         ? coords.push([row, col + i])
         : coords.push([row + i, col]);
     }
 
-    this.placeShip(new Ship(coords));
+    this.placeShip(new Ship(coords, axis));
   }
 
   allSunk() {
@@ -145,11 +175,11 @@ class Gameboard {
     const [row, col] = [...coords];
 
     if (this.#board[row][col] === 'S') {
-      const ship = this.#findShip(coords);
+      const ship = this.findShip(coords);
       ship?.hit(coords);
       this.#board[row][col] = 'X';
       if (ship.isSunk()) {
-        const coordsToDisable = this.#getCoordsAround(ship.getPositions());
+        const coordsToDisable = this.getCoordsAround(ship.getPositions());
         coordsToDisable.forEach((coords) => {
           const [row, col] = [...coords];
           this.#board[row][col] !== 'X' ? (this.#board[row][col] = 'x') : '';
