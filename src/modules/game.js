@@ -1,16 +1,33 @@
 import Render from './render';
+import DragDropRotate from './dragDropRotate';
 
 class Game {
   #player1;
   #player2;
+  #ddr; /* drag drop rotate */
 
-  constructor(player1, player2) {
+  constructor(player1, player2, ddr) {
     this.#player1 = player1;
     this.#player2 = player2;
+    this.#ddr = ddr;
   }
 
   #boardEl1 = document.querySelector('#playerBoard');
   #boardEl2 = document.querySelector('#aiBoard');
+
+  #randomizeStartingShips(player) {
+    player.getGameboard().placeRandomShip(5);
+    player.getGameboard().placeRandomShip(4);
+    player.getGameboard().placeRandomShip(3);
+    player.getGameboard().placeRandomShip(3);
+    player.getGameboard().placeRandomShip(2);
+  }
+
+  initStartingBoards() {
+    this.#randomizeStartingShips(this.#player1);
+    this.#randomizeStartingShips(this.#player2);
+    this.#ddr.addHandler();
+  }
 
   #gameControl = (e) => {
     const row = +e.target.parentElement.dataset.row;
@@ -51,27 +68,26 @@ class Game {
   }
 
   play = () => {
-    const modal = document.querySelector('.modal');
-    modal.classList.add('hidden');
+    Render.playBtn();
+    this.#ddr.removeHandler();
     this.#boardEl2.addEventListener('click', this.#gameControl);
   };
 
-  randomizeStartingShips(player) {
-    // player.getGameboard().placeRandomShip(5);
-    // player.getGameboard().placeRandomShip(4);
-    // player.getGameboard().placeRandomShip(3);
-    // player.getGameboard().placeRandomShip(3);
-    player.getGameboard().placeRandomShip(2);
-  }
-
   playAgain = () => {
-    this.randomizeStartingShips(this.#player1);
-    this.randomizeStartingShips(this.#player2);
+    const modal = document.querySelector('.modal');
+    modal.classList.add('hidden');
+
+    this.#player1.getGameboard().setBoard();
+    this.#player2.getGameboard().setBoard();
+    this.initStartingBoards();
+
+    Render.clearEl(this.#boardEl1);
+    Render.clearEl(this.#boardEl2);
     Render.board(this.#boardEl1);
     Render.board(this.#boardEl2);
+
     Render.ships(this.#player1.getGameboard().getBoard(), this.#boardEl1);
-    const game = new Game(this.#player1, this.#player2);
-    game.play();
+    Render.playBtn();
   };
 }
 

@@ -1,7 +1,7 @@
 import Render from './render';
 import Ship from './ship';
 
-class DragAndDrop {
+class DragDropRotate {
   #board;
   #boardEl;
   constructor(board, boardEl) {
@@ -146,16 +146,22 @@ class DragAndDrop {
     Render.ships(board, this.#boardEl);
   };
 
-  handler() {
-    document.addEventListener('DOMContentLoaded', () => {
-      this.#boardEl.addEventListener('dragstart', this.#dragStartHandler);
-      this.#boardEl.addEventListener('dragover', this.#dragHandler);
-      this.#boardEl.addEventListener('drop', this.#dropHandler);
-      this.#boardEl.addEventListener('dblclick', this.#rotateHandler);
-    });
+  addHandler() {
+    this.#boardEl.addEventListener('dragstart', this.#dragStartHandler);
+    this.#boardEl.addEventListener('dragover', this.#dragHandler);
+    this.#boardEl.addEventListener('drop', this.#dropHandler);
+    this.#boardEl.addEventListener('dblclick', this.#rotateHandler);
   }
 
   removeHandler() {
+    /*remove draggable attribute */
+    const draggableEls = [
+      ...this.#boardEl.querySelectorAll('div[draggable="true"]'),
+    ];
+    draggableEls.forEach((drag) => {
+      drag.setAttribute('draggable', false);
+    });
+
     this.#boardEl.removeEventListener('dragstart', this.#dragStartHandler);
     this.#boardEl.removeEventListener('dragover', this.#dragHandler);
     this.#boardEl.removeEventListener('drop', this.#dropHandler);
@@ -163,4 +169,4 @@ class DragAndDrop {
   }
 }
 
-export default DragAndDrop;
+export default DragDropRotate;

@@ -87,7 +87,7 @@ main > section {
 }
 
 .hidden {
-  display: none;
+  visibility: hidden;
 }
 
 .draggableCol {

@@ -1,18 +1,21 @@
 import Ship from './ship';
 
 class Gameboard {
-  #board = [];
-  #ships = [];
+  #board;
+  #ships;
 
   constructor() {
-    this.#setBoard();
+    this.setBoard();
   }
 
-  #setBoard() {
+  setBoard() {
+    this.#board = [];
+    this.#ships = [];
     for (let i = 0; i < 10; i++) {
       let row = Array.from(Array(10), (val) => (val = ' '));
       this.#board.push(row);
     }
+
     return true;
   }
 
@@ -173,7 +176,7 @@ class Gameboard {
 
   receiveAttack(coords) {
     const [row, col] = [...coords];
-
+    console.table(this.getBoard());
     if (this.#board[row][col] === 'S') {
       const ship = this.findShip(coords);
       ship?.hit(coords);
