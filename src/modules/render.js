@@ -57,6 +57,17 @@ class Render {
     });
   };
 
+  static playBtn = function () {
+    const playBtn = document.querySelector('.play');
+    playBtn.classList.toggle('hidden');
+  };
+
+  static clearEl(el) {
+    while (el.firstChild) {
+      el.removeChild(el.firstChild);
+    }
+  }
+
   static playAgain = function () {
     const modal = document.querySelector('.modal');
     modal.classList.remove('hidden');

@@ -1,19 +1,33 @@
 import Render from './render';
-import Ai from './ai';
-import Player from './player';
-import Gameboard from './gameboard';
+import DragDropRotate from './dragDropRotate';
 
 class Game {
   #player1;
   #player2;
+  #ddr; /* drag drop rotate */
 
-  constructor(player1, player2) {
+  constructor(player1, player2, ddr) {
     this.#player1 = player1;
     this.#player2 = player2;
+    this.#ddr = ddr;
   }
 
   #boardEl1 = document.querySelector('#playerBoard');
   #boardEl2 = document.querySelector('#aiBoard');
+
+  #randomizeStartingShips(player) {
+    player.getGameboard().placeRandomShip(5);
+    player.getGameboard().placeRandomShip(4);
+    player.getGameboard().placeRandomShip(3);
+    player.getGameboard().placeRandomShip(3);
+    player.getGameboard().placeRandomShip(2);
+  }
+
+  initStartingBoards() {
+    this.#randomizeStartingShips(this.#player1);
+    this.#randomizeStartingShips(this.#player2);
+    this.#ddr.addHandler();
+  }
 
   #gameControl = (e) => {
     const row = +e.target.parentElement.dataset.row;
@@ -53,49 +67,28 @@ class Game {
     );
   }
 
-  play() {
-    const p1Board = this.#player1.getGameboard().getBoard();
-    const p2Board = this.#player2.getGameboard().getBoard();
+  play = () => {
+    Render.playBtn();
+    this.#ddr.removeHandler();
+    this.#boardEl2.addEventListener('click', this.#gameControl);
+  };
+
+  playAgain = () => {
     const modal = document.querySelector('.modal');
     modal.classList.add('hidden');
+
+    this.#player1.getGameboard().setBoard();
+    this.#player2.getGameboard().setBoard();
+    this.initStartingBoards();
+
+    Render.clearEl(this.#boardEl1);
+    Render.clearEl(this.#boardEl2);
     Render.board(this.#boardEl1);
     Render.board(this.#boardEl2);
-    Render.ships(p1Board, this.#boardEl1);
-    // Render.ships(p2Board, this.#boardEl2);
 
-    this.#boardEl2.addEventListener('click', this.#gameControl);
-  }
-
-  #clearEl(el) {
-    while (el.firstChild) {
-      el.removeChild(el.firstChild);
-    }
-  }
-
-  randomizeStartingShips(player) {
-    player.getGameboard().placeRandomShip(5);
-    player.getGameboard().placeRandomShip(4);
-    player.getGameboard().placeRandomShip(3);
-    player.getGameboard().placeRandomShip(3);
-    player.getGameboard().placeRandomShip(2);
-  }
-
-  playAgain() {
-    const playAgainBtn = document.querySelector('.playAgain');
-    playAgainBtn.addEventListener('click', () => {
-      this.#clearEl(this.#boardEl1);
-      this.#clearEl(this.#boardEl2);
-
-      const player1 = new Player(new Gameboard());
-      const player2 = new Ai(new Gameboard());
-
-      this.randomizeStartingShips(player1);
-      this.randomizeStartingShips(player2);
-
-      const game = new Game(player1, player2);
-      game.play();
-    });
-  }
+    Render.ships(this.#player1.getGameboard().getBoard(), this.#boardEl1);
+    Render.playBtn();
+  };
 }
 
 export default Game;
