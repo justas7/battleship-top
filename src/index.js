@@ -14,13 +14,22 @@ const playAgainBtn = document.querySelector('.playAgain');
 const player1 = new Player(new Gameboard());
 const player2 = new Ai(new Gameboard());
 const ddr = new DragDropRotate(player1.getGameboard(), boardEl1);
-const game = new Game(player1, player2, ddr);
+const game = new Game(player1, player2);
 
 game.initStartingBoards();
-
+ddr.addHandler();
 Render.board(boardEl1);
 Render.board(boardEl2);
+
 Render.ships(player1.getGameboard().getBoard(), boardEl1);
 
-playBtn.addEventListener('click', game.play);
-playAgainBtn.addEventListener('click', game.playAgain);
+playBtn.addEventListener('click', () => {
+  Render.toggleDisabledCells();
+  ddr.removeHandler();
+  game.play();
+});
+playAgainBtn.addEventListener('click', () => {
+  Render.toggleDisabledCells();
+  ddr.addHandler();
+  game.playAgain();
+});

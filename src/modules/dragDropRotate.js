@@ -19,6 +19,7 @@ class DragDropRotate {
     draggableCol.classList.add('draggableCol');
     document.querySelector('body').appendChild(draggableCol);
     const ship = this.#board.findShip([row, col]);
+    const coordsAround = this.#board.getCoordsAround(ship.getPositions());
 
     if (!ship) return;
 
@@ -117,10 +118,11 @@ class DragDropRotate {
       this.#board.removeShip(ship);
     }
 
+    /* set new position */
     if (ship.getAxis() === 'horizontal') {
       for (let i = 0; i < shipLength; i++) {
         if (row + i > 9 || board[row + i][col] !== ' ') {
-          /*if any coordinate is not allowed keep old position*/
+          /*if any of coordinates are not allowed keep old position*/
           newPositions = [...ship.getPositions()];
           newAxis = 'horizontal';
           break;

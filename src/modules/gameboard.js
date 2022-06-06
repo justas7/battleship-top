@@ -39,8 +39,8 @@ class Gameboard {
   }
 
   /* get coordinates around ship on board*/
-  getCoordsAround(ship) {
-    return ship
+  getCoordsAround(shipCoords) {
+    return shipCoords
       .flatMap((coords) => {
         return [
           [coords[0] - 1, coords[1] - 1],
@@ -176,7 +176,7 @@ class Gameboard {
 
   receiveAttack(coords) {
     const [row, col] = [...coords];
-    console.table(this.getBoard());
+
     if (this.#board[row][col] === 'S') {
       const ship = this.findShip(coords);
       ship?.hit(coords);

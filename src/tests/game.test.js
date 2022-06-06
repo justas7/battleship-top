@@ -2,23 +2,21 @@ import Game from '../modules/game';
 import Player from '../modules/player';
 import Ai from '../modules/ai';
 import Gameboard from '../modules/gameboard';
-import Ship from '../modules/ship';
+import DragDropRotate from '../modules/dragDropRotate';
 
 describe('Game class', () => {
-  let game, player1, player2, ship;
+  let game, player1, player2, ddr, boardEl;
   beforeAll(() => {
     player1 = new Player(new Gameboard());
     player2 = new Ai(new Gameboard());
-    ship = new Ship([
-      [1, 2],
-      [1, 3],
-      [1, 4],
-    ]);
 
-    player1.getGameboard().placeShip(ship);
-    player2.getGameboard().placeShip(ship);
     game = new Game(player1, player2);
   });
 
-  test('play game', () => {});
+  test('fill each players board with ships in random positions', () => {
+    game.initStartingBoards();
+
+    expect(player1.getGameboard().getShips().length).toBe(5);
+    expect(player2.getGameboard().getShips().length).toBe(5);
+  });
 });

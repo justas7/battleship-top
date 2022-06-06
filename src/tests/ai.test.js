@@ -34,4 +34,6 @@ describe('Ai class', () => {
       ai.shoot(board);
     }).not.toThrowError();
   });
+
+  test.todo('after hit should shoot around last hit');
 });

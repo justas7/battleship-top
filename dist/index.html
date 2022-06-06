@@ -5,24 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
-  <script defer src="index.bundle.js"></script></head>
+    <script defer src="index.bundle.js"></script>
+  </head>
   <body>
     <header><h1>Battleship</h1></header>
     <main>
       <section>
-        <div id="aiBoard" class="board"></div>
-        <button class="play" type="button">Play</button>
-        <div class="playerContainer">
-          <div id="playerBoard" class="board"></div>
-
-          <div class="modal hidden">
+        <div class="aiContainer">
+          <h2>AI's board</h2>
+          <div id="aiBoard" class="board"></div>
+          <div class="aiOverlay">
             <div class="ModalContent">
-              <button class="playAgain" type="button">Play Again</button>
+              <div class="playBtnContainer">
+                <button class="play" type="button">Play</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="playerContainer">
+          <h2>Player's board</h2>
+          <div id="playerBoard" class="board"></div>
+          <div class="pOverlay hidden">
+            <div class="ModalContent">
+              <div class="playAgainBtnContainer">
+                <button class="playAgain" type="button">Play Again</button>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </main>
-    <footer></footer>
+    <footer><p>*Hold ship to drag around or double click to rotate</p></footer>
   </body>
 </html>

@@ -1,15 +1,12 @@
 import Render from './render';
-import DragDropRotate from './dragDropRotate';
 
 class Game {
   #player1;
   #player2;
-  #ddr; /* drag drop rotate */
 
-  constructor(player1, player2, ddr) {
+  constructor(player1, player2) {
     this.#player1 = player1;
     this.#player2 = player2;
-    this.#ddr = ddr;
   }
 
   #boardEl1 = document.querySelector('#playerBoard');
@@ -26,7 +23,6 @@ class Game {
   initStartingBoards() {
     this.#randomizeStartingShips(this.#player1);
     this.#randomizeStartingShips(this.#player2);
-    this.#ddr.addHandler();
   }
 
   #gameControl = (e) => {
@@ -46,7 +42,7 @@ class Game {
     Render.attacks(p2Board.getBoard(), this.#boardEl2);
 
     if (this.#isGameFinished()) {
-      Render.playAgain();
+      Render.togglePlayAgain();
       this.#boardEl2.removeEventListener('click', this.#gameControl);
       return;
     }
@@ -54,7 +50,7 @@ class Game {
     this.#player2.shoot(p1Board);
     Render.attacks(p1Board.getBoard(), this.#boardEl1);
     if (this.#isGameFinished()) {
-      Render.playAgain();
+      Render.togglePlayAgain();
       this.#boardEl2.removeEventListener('click', this.#gameControl);
       return;
     }
@@ -68,14 +64,12 @@ class Game {
   }
 
   play = () => {
-    Render.playBtn();
-    this.#ddr.removeHandler();
+    Render.togglePlayBtn();
     this.#boardEl2.addEventListener('click', this.#gameControl);
   };
 
   playAgain = () => {
-    const modal = document.querySelector('.modal');
-    modal.classList.add('hidden');
+    Render.togglePlayAgain();
 
     this.#player1.getGameboard().setBoard();
     this.#player2.getGameboard().setBoard();
@@ -85,9 +79,8 @@ class Game {
     Render.clearEl(this.#boardEl2);
     Render.board(this.#boardEl1);
     Render.board(this.#boardEl2);
-
     Render.ships(this.#player1.getGameboard().getBoard(), this.#boardEl1);
-    Render.playBtn();
+    Render.togglePlayBtn();
   };
 }
 

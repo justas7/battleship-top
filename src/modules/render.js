@@ -1,24 +1,29 @@
 class Render {
   static board = function (boardEl) {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i <= 10; i++) {
       const row = document.createElement('div');
       row.classList.add('row');
-      row.setAttribute('data-row', i);
-      for (let j = 0; j < 10; j++) {
+      row.setAttribute('data-row', i - 1);
+
+      for (let j = 0; j <= 10; j++) {
         const col = document.createElement('div');
-        col.setAttribute('data-col', j);
-        col.classList.add('col');
+        if (i === 0 && j >= 1) {
+          col.textContent = String.fromCharCode(64 + j);
+          col.classList.add('xCoords');
+        }
+        if (j === 0 && i >= 1) {
+          col.textContent = i;
+          col.classList.add('yCoords');
+        }
+        if (j > 0 && i > 0) {
+          col.setAttribute('data-col', j - 1);
+          col.classList.add('col');
+        }
         row.appendChild(col);
       }
+
       boardEl.appendChild(row);
     }
-  };
-
-  static removeShips = function (boardEl) {
-    const ships = boardEl.querySelectorAll('.ship');
-    const disabledCells = boardEl.querySelectorAll('.disabledCell');
-    [...ships].forEach((ship) => ship.remove());
-    [...disabledCells].forEach((cell) => cell.classList.remove('disabledCell'));
   };
 
   /* first parameter is board of gameboard object */
@@ -32,7 +37,6 @@ class Render {
           ship.setAttribute('draggable', 'true');
           ship.setAttribute('data-row', row.dataset.row);
           ship.setAttribute('data-col', col.dataset.col);
-          ship.classList.add('ship');
           ship.classList.add('ship');
           gameboard[i][j] === 'S'
             ? col.appendChild(ship)
@@ -57,8 +61,21 @@ class Render {
     });
   };
 
-  static playBtn = function () {
-    const playBtn = document.querySelector('.play');
+  static removeShips = function (boardEl) {
+    const ships = boardEl.querySelectorAll('.ship');
+    [...ships].forEach((ship) => ship.remove());
+    this.toggleDisabledCells();
+  };
+
+  static toggleDisabledCells = function () {
+    const disabledCells = [...document.querySelectorAll('.disabledCell')];
+    disabledCells.forEach((cell) => cell.classList.toggle('disabledCell'));
+  };
+
+  static togglePlayBtn = function () {
+    const playBtn = document.querySelector('.playBtnContainer');
+    const aiOverlay = document.querySelector('.aiOverlay');
+    aiOverlay.classList.toggle('hidden');
     playBtn.classList.toggle('hidden');
   };
 
@@ -68,9 +85,10 @@ class Render {
     }
   }
 
-  static playAgain = function () {
-    const modal = document.querySelector('.modal');
-    modal.classList.remove('hidden');
+  static togglePlayAgain = function () {
+    const pOverlay = document.querySelector('.pOverlay');
+
+    pOverlay.classList.toggle('hidden');
   };
 }
 

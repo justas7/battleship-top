@@ -1,6 +1,9 @@
 :root {
   --blue-color: #4169e1;
+  --blue2-color: #b7ccdf;
   --ivory-color: #fffff3;
+  --red-color: #ddb9bb;
+  --ship-color: #b2a292;
 }
 
 @import './normalize.css';
