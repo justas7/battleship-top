@@ -72,9 +72,19 @@ class Render {
     disabledCells.forEach((cell) => cell.classList.toggle('disabledCell'));
   };
 
+  static endGameMessage = function (message, opacity, pos, color) {
+    const container = document.querySelector('.endGameMessage');
+    container.textContent = message;
+    container.style.opacity = opacity;
+    container.style.color = color;
+    container.style.transform = `translateY(${pos})`;
+  };
+
   static togglePlayBtn = function () {
     const playBtn = document.querySelector('.playBtnContainer');
     const aiOverlay = document.querySelector('.aiOverlay');
+    this.endGameMessage(null, '0', '-100px');
+
     aiOverlay.classList.toggle('hidden');
     playBtn.classList.toggle('hidden');
   };

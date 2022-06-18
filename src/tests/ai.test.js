@@ -35,5 +35,5 @@ describe('Ai class', () => {
     }).not.toThrowError();
   });
 
-  test.todo('after hit should shoot around last hit');
+  // test.todo('after hit should shoot around last hit', () => {});
 });

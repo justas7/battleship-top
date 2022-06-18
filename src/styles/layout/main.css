@@ -4,6 +4,7 @@ main {
   align-items: center;
   flex-direction: column;
   flex: 1;
+  position: relative;
 }
 
 main > section {
@@ -25,6 +26,10 @@ main > section {
   clip-path: polygon(15px 0%, 100px 0, 100px 25px, 85px 40px, 0 40px, 0 15px);
   transition: transform 0.5s ease;
   margin-top: 30px;
+}
+
+.playBtnContainer {
+  background-color: var(--red2-color);
 }
 
 .play,
@@ -51,6 +56,10 @@ main > section {
   width: 100%;
   height: 100%;
   transition: transform 0.2s ease;
+}
+
+.play::after {
+  background: rgba(225, 65, 105, 0.6);
 }
 
 .playBtnContainer:hover,
@@ -81,6 +90,19 @@ main > section {
   color: var(--blue-color);
   cursor: default;
   user-select: none;
+}
+
+#aiBoard .xCoords,
+#aiBoard .yCoords {
+  color: var(--red2-color);
+}
+
+.aiContainer {
+  color: var(--red2-color);
+}
+
+.playerContainer {
+  color: var(--blue-color);
 }
 
 .row {
@@ -169,7 +191,6 @@ main > section {
   justify-content: center;
   align-items: center;
   gap: 40px;
-  color: var(--blue-color);
 }
 
 .playerContainer > .board {
@@ -184,4 +205,15 @@ main > section {
   background-color: rgb(126, 129, 126);
   position: absolute;
   transform: translateX(-100vw);
+}
+
+.endGameMessage {
+  font-size: 2.5rem;
+  position: absolute;
+  top: 75px;
+  font-weight: 900;
+  opacity: 0;
+  text-shadow: 1px 1px 15px #ccc;
+  transform: translateY(-100px);
+  transition: opacity 0.3s, transform 0.3s;
 }

@@ -42,6 +42,7 @@ class Game {
     Render.attacks(p2Board.getBoard(), this.#boardEl2);
 
     if (this.#isGameFinished()) {
+      Render.endGameMessage('You Won!', '1', 0, '#4169e1');
       Render.togglePlayAgain();
       this.#boardEl2.removeEventListener('click', this.#gameControl);
       return;
@@ -50,6 +51,7 @@ class Game {
     this.#player2.shoot(p1Board);
     Render.attacks(p1Board.getBoard(), this.#boardEl1);
     if (this.#isGameFinished()) {
+      Render.endGameMessage('Game Over!', '1', 0, '#e14169');
       Render.togglePlayAgain();
       this.#boardEl2.removeEventListener('click', this.#gameControl);
       return;
@@ -73,6 +75,7 @@ class Game {
 
     this.#player1.getGameboard().setBoard();
     this.#player2.getGameboard().setBoard();
+    this.#player2.clearMoves();
     this.initStartingBoards();
 
     Render.clearEl(this.#boardEl1);
